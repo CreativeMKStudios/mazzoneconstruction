@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import { business } from '../data/site';
+
+const title = 'Privacy';
+const description = 'How Mazzone Construction handles your name, phone number, and email if you get in touch. This site does not use tracking cookies.';
+---
+
+<Base title={title} description={description} tone="light">
+  <section class="section">
+    <div class="wrap prose">
+      <p class="crumbs"><a href="/">Home</a> / Privacy</p>
+      <h1>Privacy</h1>
+      <p>
+        This page says what happens to your details if you contact Mazzone Construction. We are based at {business.address.street}, {business.address.locality}, {business.address.postalCode}. Email {business.email}.
+      </p>
+      <h2>This website</h2>
+      <p>
+        The site does not use tracking cookies, adverts, or an analytics tool. The contact form does not save your message on the website. It opens an email on your device so you can send it yourself.
+      </p>
+      <h2>If you email or call</h2>
+      <p>
+        We use your name, phone number, email, address, and what you tell us about the job so we can reply and, if you want, price the work. We do not sell that information. We keep emails and quotes for as long as we need them for the job, for accounts, or in case a question comes up later.
+      </p>
+      <h2>Your rights</h2>
+      <p>
+        You can ask what details we hold, ask us to correct them, or ask us to delete them when we do not have to keep them for the law or for a live job. Write to {business.email}. You can also complain to the Information Commissioner’s Office at ico.org.uk.
+      </p>
+      <h2>Links</h2>
+      <p>
+        Links to Google Maps and Instagram leave this site. Those sites have their own privacy rules. We do not control them.
+      </p>
+    </div>
+  </section>
+</Base>

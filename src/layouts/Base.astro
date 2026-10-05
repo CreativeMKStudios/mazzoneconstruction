@@ -1,0 +1,98 @@
+---
+import '@fontsource-variable/outfit/wght.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { business, businessNode, canonical, jsonLd } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  schema?: unknown[];
+  tone?: 'photo' | 'light';
+}
+
+const { title, description, image = '/og.jpg', schema = [], tone = 'photo' } = Astro.props;
+const url = canonical(Astro.url.pathname);
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    businessNode(business.url),
+    {
+      '@type': 'WebSite',
+      '@id': `${business.url}/#website`,
+      url: business.url,
+      name: business.name,
+      inLanguage: 'en-GB',
+      publisher: { '@id': `${business.url}/#business` },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${url}#webpage`,
+      url,
+      name: title,
+      description,
+      isPartOf: { '@id': `${business.url}/#website` },
+      about: { '@id': `${business.url}/#business` },
+      inLanguage: 'en-GB',
+      primaryImageOfPage: new URL(image, business.url).href,
+    },
+    ...schema,
+  ],
+};
+const fullTitle = title.includes(business.name) ? title : `${title} | ${business.name}`;
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+    <link rel="alternate" hreflang="en-GB" href={url} />
+    <link rel="alternate" hreflang="x-default" href={url} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#10243c" />
+    <meta name="geo.placename" content="Kettering" />
+    <meta name="geo.region" content="GB" />
+    <meta name="format-detection" content="telephone=yes" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={new URL(image, business.url).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A new stone house built in honey-coloured local stone." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image, business.url).href} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script type="application/ld+json" set:html={jsonLd(graph)} />
+    <slot name="head" />
+  </head>
+  <body class="has-callbar">
+    <a class="skip" href="#main">Skip to content</a>
+    <Header tone={tone} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <a class="callbar" href={`tel:${business.phones[0].tel}`}>Call Brando on {business.phones[0].display}</a>
+    <script>
+      const header = document.querySelector<HTMLElement>('.site-header');
+      if (header?.dataset.overlay === 'true') {
+        const onScroll = () => header.classList.toggle('is-solid', window.scrollY > 24);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }
+    </script>
+  </body>
+</html>

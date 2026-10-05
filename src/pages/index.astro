@@ -1,0 +1,201 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ReviewList from '../components/ReviewList.astro';
+import { areas, business, faqs, photos, reviews, services, steps } from '../data/site';
+
+const title = 'Stonemasons and builders in Kettering';
+const description =
+  'Mazzone Construction repairs stone and brick, builds extensions and new stone houses, and renovates homes in Kettering and nearby towns. 5.0 from 20 Google reviews.';
+const homeFaqs = {
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+---
+
+<Base title={title} description={description} schema={[homeFaqs]}>
+  <section class="hero">
+    <Image
+      src={photos.stoneHouse.src}
+      alt={photos.stoneHouse.alt}
+      class="hero-media"
+      widths={[768, 1280, 1600, 2000]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="hero-copy">
+      <p class="kicker light">Kettering · Northamptonshire</p>
+      <h1>Stonemasons and builders for homes that last.</h1>
+      <p>
+        We repair stone and brick, extend houses, and renovate kitchens and bathrooms across Kettering and the towns around it.
+      </p>
+      <div class="actions">
+        <a class="btn light" href="/contact">Contact us</a>
+        <a class="btn-line" href="/projects">See the work</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <Image
+        src={photos.fireplace.src}
+        alt={photos.fireplace.alt}
+        widths={[480, 720, 960]}
+        sizes="(min-width: 900px) 50vw, 100vw"
+      />
+      <div>
+        <p class="kicker">About us</p>
+        <h2>Brando and Roberto, on the tools.</h2>
+        <p class="lede">
+          Mazzone Construction is a Kettering building firm. Brando is a stonemason. He worked at DJ Tailby Ltd before this. Roberto works with him. Clients name both of them in their Google reviews.
+        </p>
+        <p class="lede">
+          The work runs from a repointed wall or a chimney taken down, up to an extension or a new stone house. The site gets left tidy. That line comes up again and again in the reviews.
+        </p>
+        <p><a class="more" href="/about">More about us</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section paper">
+    <div class="wrap">
+      <p class="kicker">Services</p>
+      <h2>What we can do at your house.</h2>
+      <div class="cards">
+        {
+          services.map((service) => (
+            <article class="card">
+              <a href={`/services/${service.slug}`}>
+                <Image
+                  src={photos[service.photos[0]].src}
+                  alt=""
+                  widths={[400, 640]}
+                  sizes="(min-width: 900px) 33vw, 100vw"
+                />
+                <div>
+                  <h3>{service.title}</h3>
+                  <p>{service.summary}</p>
+                  <p class="more">Read more</p>
+                </div>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="rating-row">
+        <div>
+          <p class="kicker">Projects</p>
+          <h2>Photos from the jobs.</h2>
+        </div>
+        <a class="more" href="/projects">All project photos</a>
+      </div>
+      <div class="project-grid">
+        {
+          [photos.stoneHouse, photos.gardenWall, photos.showerAfter, photos.brickGable, photos.stoneRepair].map(
+            (photo) => (
+              <figure>
+                <Image src={photo.src} alt={photo.alt} widths={[480, 800, 1200]} sizes="(min-width: 900px) 40vw, 100vw" />
+                <figcaption>{photo.caption}</figcaption>
+              </figure>
+            ),
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section paper">
+    <div class="wrap">
+      <div class="rating-row">
+        <div>
+          <p class="kicker">Reviews</p>
+          <p class="score">{business.rating}.0</p>
+          <p class="stars"><span class="sr">5 out of 5.</span><span aria-hidden="true">★★★★★</span></p>
+          <p class="lede">From {business.reviewCount} Google reviews. These are written out as people typed them.</p>
+        </div>
+        <a class="btn" href="/reviews">Read the reviews</a>
+      </div>
+      <ReviewList items={reviews.slice(0, 4)} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <p class="kicker">Areas</p>
+      <h2>Kettering, and the towns around it.</h2>
+      <p class="lede">
+        We live and work here. The drive has to make sense for the size of the job, and we will say so if it does not.
+      </p>
+      <div class="area-grid" style="margin-top:22px;">
+        {
+          areas.map((area) => (
+            <article class="area-card">
+              <h3><a href={`/areas/${area.slug}`}>{area.name}</a></h3>
+              <p>{area.summary}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section paper">
+    <div class="wrap">
+      <p class="kicker">How it works</p>
+      <h2>Four plain steps.</h2>
+      <div class="step-grid">
+        {
+          steps.map((step, index) => (
+            <article class="step">
+              <span>0{index + 1}</span>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap" style="max-width:760px;">
+      <p class="kicker">Questions</p>
+      <h2>Before you call.</h2>
+      <div class="faq">
+        {
+          faqs.map((item) => (
+            <details>
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="navy-band section">
+    <div class="wrap">
+      <p class="kicker light">Contact</p>
+      <h2>Tell us what the house needs.</h2>
+      <p style="max-width:38rem;color:rgba(255,255,255,.88);">
+        Brando is on {business.phones[0].display}. Roberto is on {business.phones[1].display}. Or email {business.email}.
+      </p>
+      <div class="actions">
+        <a class="btn light" href="/contact">Contact us</a>
+        <a class="btn-line" href={`tel:${business.phones[0].tel}`}>Call {business.phones[0].display}</a>
+      </div>
+    </div>
+  </section>
+</Base>

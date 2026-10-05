@@ -1,0 +1,52 @@
+---
+import { areas, business, services } from '../data/site';
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <p class="brand" style="font-size:1.4rem;margin-bottom:8px;">Mazzone</p>
+      <p>
+        Stonemasons and builders based at {business.address.street}, {business.address.locality},{' '}
+        {business.address.postalCode}.
+      </p>
+      <p>
+        <a href={`tel:${business.phones[0].tel}`}>Brando {business.phones[0].display}</a><br />
+        <a href={`tel:${business.phones[1].tel}`}>Roberto {business.phones[1].display}</a><br />
+        <a href={`mailto:${business.email}`}>{business.email}</a>
+      </p>
+    </div>
+    <div>
+      <h2 style="font-size:1rem;letter-spacing:0.08em;text-transform:uppercase;">Services</h2>
+      <ul>
+        {services.map((service) => (
+          <li><a href={`/services/${service.slug}`}>{service.title}</a></li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <h2 style="font-size:1rem;letter-spacing:0.08em;text-transform:uppercase;">Areas</h2>
+      <ul>
+        {areas.map((area) => (
+          <li><a href={`/areas/${area.slug}`}>{area.name}</a></li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <h2 style="font-size:1rem;letter-spacing:0.08em;text-transform:uppercase;">Visit</h2>
+      <ul>
+        <li><a href="/about">About us</a></li>
+        <li><a href="/projects">Projects</a></li>
+        <li><a href="/reviews">Google reviews</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href={business.maps}>Google profile</a></li>
+        <li><a href={business.instagram}>Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap legal">
+    <span>© {new Date().getFullYear()} {business.name}</span>
+    <span>{business.rating}.0 from {business.reviewCount} Google reviews</span>
+  </div>
+</footer>

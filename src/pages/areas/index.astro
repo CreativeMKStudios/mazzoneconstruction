@@ -1,0 +1,49 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { areas, business, photos, villages } from '../../data/site';
+
+const title = 'Areas we cover from Kettering';
+const description =
+  'Mazzone Construction works in Kettering, Burton Latimer, Rothwell, Desborough, Corby, Wellingborough, Northampton, and nearby villages.';
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: business.url },
+    { '@type': 'ListItem', position: 2, name: 'Areas', item: `${business.url}/areas` },
+  ],
+};
+---
+
+<Base title={title} description={description} schema={[crumbs]}>
+  <PageHero
+    image={photos.stoneHouse.src}
+    alt={photos.stoneHouse.alt}
+    kicker="Areas"
+    title="Local houses, local stone."
+    lede="We are based in Kettering. These are the towns where a visit is a normal part of the week, not a special trip."
+  />
+  <section class="section">
+    <div class="wrap">
+      <p class="crumbs"><a href="/">Home</a> / Areas</p>
+      <div class="area-grid">
+        {
+          areas.map((area) => (
+            <article class="area-card">
+              <h2 style="font-size:1.35rem;"><a href={`/areas/${area.slug}`}>{area.name}</a></h2>
+              <p>{area.summary}</p>
+              <p><a class="more" href={`/areas/${area.slug}`}>Building work in {area.name}</a></p>
+            </article>
+          ))
+        }
+      </div>
+      <h2 style="margin-top:42px;">Villages and other places</h2>
+      <p class="lede">
+        We also cover the villages between these towns. If you are in one of these, call with the address and we will tell you straight if we can take it.
+      </p>
+      <ul class="village-list">
+        {villages.map((place) => <li>{place}</li>)}
+      </ul>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,50 @@
+---
+import { business } from '../data/site';
+
+interface Props {
+  tone?: 'photo' | 'light';
+}
+const { tone = 'photo' } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/services', label: 'Services' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/reviews', label: 'Reviews' },
+  { href: '/areas', label: 'Areas' },
+  { href: '/contact', label: 'Contact' },
+];
+function current(href: string) {
+  if (href === '/') return path === '/' ? 'page' : undefined;
+  return path === href || path.startsWith(`${href}/`) ? 'page' : undefined;
+}
+---
+
+<header class:list={['site-header', { 'is-solid': tone === 'light' }]} data-overlay={tone === 'photo' ? 'true' : undefined}>
+  <a class="brand" href="/">{business.name.split(' ')[0]}</a>
+  <nav class="desk" aria-label="Main">
+    {
+      links.map((link) => (
+        <a href={link.href} aria-current={current(link.href)}>
+          {link.label}
+        </a>
+      ))
+    }
+    <a class="header-phone" href={`tel:${business.phones[0].tel}`}>{business.phones[0].display}</a>
+  </nav>
+  <details class="menu">
+    <summary class="menu-btn" aria-label="Open menu">
+      <span class="burger"></span>
+    </summary>
+    <nav aria-label="Mobile">
+      {
+        links.map((link) => (
+          <a href={link.href} aria-current={current(link.href)}>
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+  </details>
+</header>

@@ -1,0 +1,68 @@
+---
+import { business, services } from '../data/site';
+---
+
+<form id="quote-form" action={`mailto:${business.email}`} method="post" enctype="text/plain">
+  <label>
+    Your name
+    <input name="name" autocomplete="name" required maxlength="80" />
+  </label>
+  <label>
+    Email
+    <input name="email" type="email" autocomplete="email" required maxlength="120" />
+  </label>
+  <label>
+    Phone
+    <input name="phone" type="tel" autocomplete="tel" required maxlength="30" />
+  </label>
+  <label>
+    Town
+    <input name="town" autocomplete="address-level2" required maxlength="80" />
+  </label>
+  <label>
+    What do you need?
+    <select name="service" required>
+      <option value="">Choose a service</option>
+      {services.map((service) => <option value={service.title}>{service.title}</option>)}
+      <option>Not sure yet</option>
+    </select>
+  </label>
+  <label>
+    Tell us about the job
+    <textarea name="message" required maxlength="2000" placeholder="What needs doing, and roughly when?"></textarea>
+  </label>
+  <label class="honeypot">
+    Company website
+    <input name="company" tabindex="-1" autocomplete="off" />
+  </label>
+  <button class="btn" type="submit">Send message</button>
+  <p class="form-note" id="form-note" role="status">
+    This opens an email to {business.email}. Nothing is stored on this website.
+  </p>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#quote-form');
+  const note = document.querySelector('#form-note');
+  form?.addEventListener('submit', (event) => {
+    const data = new FormData(form);
+    if (String(data.get('company') || '').trim()) {
+      event.preventDefault();
+      return;
+    }
+    event.preventDefault();
+    const lines = [
+      `Name: ${data.get('name')}`,
+      `Email: ${data.get('email')}`,
+      `Phone: ${data.get('phone')}`,
+      `Town: ${data.get('town')}`,
+      `Service: ${data.get('service')}`,
+      '',
+      String(data.get('message') || ''),
+    ];
+    const email = 'mazzonelimited@gmail.com';
+    const href = `mailto:${email}?subject=${encodeURIComponent('Quote enquiry from the website')}&body=${encodeURIComponent(lines.join('\n'))}`;
+    window.location.href = href;
+    if (note) note.textContent = 'Your email app should open with the message ready. Press send there so it reaches us.';
+  });
+</script>

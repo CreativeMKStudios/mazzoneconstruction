@@ -1,0 +1,69 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { business, photos, services } from '../../data/site';
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+const { service } = Astro.props;
+const hero = photos[service.photos[0]];
+const title = `${service.title} in Kettering`;
+const description = `${service.summary} Mazzone Construction, based at Headlands in Kettering, covers north Northamptonshire.`;
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: business.url },
+    { '@type': 'ListItem', position: 2, name: 'Services', item: `${business.url}/services` },
+    { '@type': 'ListItem', position: 3, name: service.title, item: `${business.url}/services/${service.slug}` },
+  ],
+};
+const serviceSchema = {
+  '@type': 'Service',
+  name: service.title,
+  description: service.lede,
+  url: `${business.url}/services/${service.slug}`,
+  areaServed: { '@type': 'AdministrativeArea', name: 'Northamptonshire' },
+  provider: { '@id': `${business.url}/#business` },
+};
+---
+
+<Base title={title} description={description} schema={[crumbs, serviceSchema]}>
+  <PageHero image={hero.src} alt={hero.alt} kicker="Services" title={service.title} lede={service.lede} />
+  <section class="section">
+    <div class="wrap" style="display:grid;grid-template-columns:1.2fr .8fr;gap:36px;align-items:start;">
+      <div class="prose">
+        <p class="crumbs"><a href="/">Home</a> / <a href="/services">Services</a> / {service.title}</p>
+        {service.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        <div class="actions">
+          <a class="btn" href="/contact">Ask for a quote</a>
+          <a class="btn-line" href="/projects">See photos</a>
+        </div>
+      </div>
+      <aside>
+        <h2 style="font-size:1.2rem;">Jobs in this line of work</h2>
+        <ul class="job-list">
+          {service.jobs.map((job) => <li>{job}</li>)}
+        </ul>
+      </aside>
+    </div>
+    <div class="wrap gallery" style="margin-top:28px;">
+      {
+        service.photos.map((key) => (
+          <figure>
+            <Image src={photos[key].src} alt={photos[key].alt} widths={[480, 800]} sizes="(min-width: 900px) 33vw, 100vw" />
+            <figcaption>{photos[key].caption}</figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  @media (max-width: 800px) {
+    .wrap[style] { grid-template-columns: 1fr !important; }
+  }
+</style>

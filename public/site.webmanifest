@@ -1,0 +1,18 @@
+{
+  "name": "Mazzone Construction",
+  "short_name": "Mazzone",
+  "description": "Stonemasons and builders based in Kettering, Northamptonshire.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#10243c",
+  "lang": "en-GB",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

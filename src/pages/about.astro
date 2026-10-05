@@ -1,0 +1,76 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { brandoPhoto, business, photos, robertoPhoto } from '../data/site';
+
+const title = 'About Mazzone Construction';
+const description =
+  'Meet Brando and Roberto, the Kettering stonemasons and builders behind Mazzone Construction. Based at 1a Headlands, NN15 7ER.';
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: business.url },
+    { '@type': 'ListItem', position: 2, name: 'About', item: `${business.url}/about` },
+  ],
+};
+---
+
+<Base title={title} description={description} schema={[crumbs]}>
+  <PageHero
+    image={photos.rearElevation.src}
+    alt={photos.rearElevation.alt}
+    kicker="About us"
+    title="A small team that stays on the job."
+    lede="Mazzone Construction is Brando and Roberto. They are based in Kettering and they do the work themselves."
+  />
+  <section class="section">
+    <div class="wrap prose">
+      <p class="crumbs"><a href="/">Home</a> / About</p>
+      <p>
+        Brando Biddle runs the firm. He is a stonemason and worked at DJ Tailby Ltd before Mazzone. Roberto Barr works with him on site. Google reviews name both of them, including on stone repairs, repointing, a kitchen, and an extension.
+      </p>
+      <p>
+        The old website called the work “bespoke” and talked in circles. The jobs are simpler to describe than that. People ask for stone and brick to be put right, for more room on the back of the house, for a kitchen or a shower room, and sometimes for a new stone house.
+      </p>
+      <p>
+        We are based at {business.address.street}, {business.address.locality}, {business.address.postalCode}. Call before you visit. There is no showroom and no shop counter. Google lists the place as a construction company and shows a 5.0 rating from 20 reviews.
+      </p>
+    </div>
+    <div class="wrap team" style="margin-top:36px;">
+      <figure>
+        <Image src={brandoPhoto} alt="Brando, from Mazzone Construction, standing in front of a stone wall." widths={[480, 720]} sizes="(min-width: 800px) 40vw, 100vw" />
+        <figcaption>
+          <strong>Brando</strong><br />
+          Stonemason. <a href={`tel:${business.phones[0].tel}`}>{business.phones[0].display}</a>
+        </figcaption>
+      </figure>
+      <figure>
+        <Image src={robertoPhoto} alt="Roberto, from Mazzone Construction, standing in front of a stone wall." widths={[480, 720]} sizes="(min-width: 800px) 40vw, 100vw" />
+        <figcaption>
+          <strong>Roberto</strong><br />
+          On the tools with Brando. <a href={`tel:${business.phones[1].tel}`}>{business.phones[1].display}</a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+  <section class="section paper">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">What clients mention</p>
+        <h2>Tidy work, and the same faces.</h2>
+        <ul>
+          <li>Stone repairs on a three-storey Victorian terrace, including the front and a rear bay.</li>
+          <li>Repointing, with one client saying Brando went further than he had to.</li>
+          <li>A garden wall rebuilt with space left to plant.</li>
+          <li>A chimney taken down, the site left neat.</li>
+          <li>A downstairs toilet turned into a shower room, finished in the time agreed.</li>
+          <li>A kitchen renovation that Brando ran, with a fast turnaround.</li>
+          <li>Extension stonework, and help through each stage of the build.</li>
+        </ul>
+        <p><a class="more" href="/reviews">Read the Google reviews</a></p>
+      </div>
+      <Image src={photos.gardenWall.src} alt={photos.gardenWall.alt} widths={[480, 800]} sizes="(min-width: 900px) 45vw, 100vw" />
+    </div>
+  </section>
+</Base>
