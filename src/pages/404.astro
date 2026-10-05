@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+
+const title = 'Page not found';
+const description = 'That page is not on the Mazzone Construction site. Try the home page, services, or contact.';
+---
+
+<Base title={title} description={description} tone="light">
+  <section class="section">
+    <div class="wrap prose">
+      <p class="kicker">404</p>
+      <h1>That page is not here.</h1>
+      <p class="lede">The link may be old, or the address may be typed wrong. The work is still on the pages below.</p>
+      <div class="actions">
+        <a class="btn" href="/">Home</a>
+        <a class="btn-line" href="/services">Services</a>
+        <a class="btn-line" href="/contact">Contact</a>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { business, photos } from '../data/site';
+
+const title = 'Contact Mazzone Construction';
+const description =
+  'Call Brando on 07860 207117 or Roberto on 07925 418257. Mazzone Construction is based at 1a Headlands, Kettering, NN15 7ER.';
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: business.url },
+    { '@type': 'ListItem', position: 2, name: 'Contact', item: `${business.url}/contact` },
+  ],
+};
+const contactPage = {
+  '@type': 'ContactPage',
+  name: title,
+  url: `${business.url}/contact`,
+  mainEntity: { '@id': `${business.url}/#business` },
+};
+---
+
+<Base title={title} description={description} schema={[crumbs, contactPage]}>
+  <PageHero
+    image={photos.stoneFront.src}
+    alt={photos.stoneFront.alt}
+    kicker="Contact"
+    title="Call, or send the job in writing."
+    lede="A phone call is the fastest way to get a visit booked. The form opens an email to us. It is not stored on this site."
+  />
+  <section class="section">
+    <div class="wrap contact-grid">
+      <div class="facts">
+        <p class="crumbs"><a href="/">Home</a> / Contact</p>
+        <div>
+          <h2 style="font-size:1.15rem;">Brando</h2>
+          <p><a href={`tel:${business.phones[0].tel}`}>{business.phones[0].display}</a></p>
+        </div>
+        <div>
+          <h2 style="font-size:1.15rem;">Roberto</h2>
+          <p><a href={`tel:${business.phones[1].tel}`}>{business.phones[1].display}</a></p>
+        </div>
+        <div>
+          <h2 style="font-size:1.15rem;">Email</h2>
+          <p><a href={`mailto:${business.email}`}>{business.email}</a></p>
+        </div>
+        <div>
+          <h2 style="font-size:1.15rem;">Base</h2>
+          <p>
+            {business.address.street}<br />
+            {business.address.locality}<br />
+            {business.address.region}<br />
+            {business.address.postalCode}
+          </p>
+          <p><a href={business.maps}>Open in Google Maps</a> · Plus code {business.plusCode}</p>
+        </div>
+        <p class="note">
+          Call before you visit. This address is our Kettering base, not a trade counter with browsing hours. Google’s “open 24 hours” flag is not a promise that someone is in the office all night.
+        </p>
+      </div>
+      <ContactForm />
+    </div>
+  </section>
+</Base>

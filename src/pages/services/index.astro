@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { business, photos, services } from '../../data/site';
+
+const title = 'Building services in Kettering';
+const description =
+  'Stonemasonry, heritage brickwork, extensions, new builds, home renovations, and job running from Mazzone Construction in Kettering.';
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: business.url },
+    { '@type': 'ListItem', position: 2, name: 'Services', item: `${business.url}/services` },
+  ],
+};
+---
+
+<Base title={title} description={description} schema={[crumbs]}>
+  <PageHero
+    image={photos.stoneRepair.src}
+    alt={photos.stoneRepair.alt}
+    kicker="Services"
+    title="The work we actually take on."
+    lede="Stone, brick, extensions, new houses, and the rooms inside. If you are not sure which one you need, send photos."
+  />
+  <section class="section">
+    <div class="wrap">
+      <p class="crumbs"><a href="/">Home</a> / Services</p>
+      <div class="cards">
+        {
+          services.map((service) => (
+            <article class="card">
+              <a href={`/services/${service.slug}`}>
+                <Image src={photos[service.photos[0]].src} alt="" widths={[480, 720]} sizes="(min-width: 900px) 33vw, 100vw" />
+                <div>
+                  <h2 style="font-size:1.35rem;">{service.title}</h2>
+                  <p>{service.summary}</p>
+                  <p class="more">See this service</p>
+                </div>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Base>

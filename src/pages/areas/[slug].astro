@@ -1,0 +1,56 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { areas, business, photos } from '../../data/site';
+
+export function getStaticPaths() {
+  return areas.map((area) => ({ params: { slug: area.slug }, props: { area } }));
+}
+
+const { area } = Astro.props;
+const heroKeys = {
+  kettering: 'rearElevation',
+  'burton-latimer': 'stoneFront',
+  rothwell: 'fireplace',
+  desborough: 'stoneRepair',
+  corby: 'showerDoorway',
+  wellingborough: 'brickGable',
+  northampton: 'newBuildSite',
+} as const;
+const hero = photos[heroKeys[area.slug]];
+const title = `Builders in ${area.name}`;
+const description = `${area.summary} Mazzone Construction is based in Kettering and works in ${area.name}.`;
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: business.url },
+    { '@type': 'ListItem', position: 2, name: 'Areas', item: `${business.url}/areas` },
+    { '@type': 'ListItem', position: 3, name: area.name, item: `${business.url}/areas/${area.slug}` },
+  ],
+};
+const place = {
+  '@type': 'Service',
+  name: `Building work in ${area.name}`,
+  description: area.summary,
+  areaServed: { '@type': 'City', name: area.name },
+  provider: { '@id': `${business.url}/#business` },
+  url: `${business.url}/areas/${area.slug}`,
+};
+---
+
+<Base title={title} description={description} schema={[crumbs, place]}>
+  <PageHero image={hero.src} alt={hero.alt} kicker={area.name} title={`Building work in ${area.name}.`} lede={area.summary} />
+  <section class="section">
+    <div class="wrap prose">
+      <p class="crumbs"><a href="/">Home</a> / <a href="/areas">Areas</a> / {area.name}</p>
+      {area.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      <p>
+        The same people cover {area.name} as the rest of our work: Brando on {business.phones[0].display} and Roberto on {business.phones[1].display}.
+      </p>
+      <div class="actions">
+        <a class="btn" href="/contact">Ask about a job in {area.name}</a>
+        <a class="btn-line" href="/services">See services</a>
+      </div>
+    </div>
+  </section>
+</Base>

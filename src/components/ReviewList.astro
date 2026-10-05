@@ -1,0 +1,29 @@
+---
+import { formatDate, type Review } from '../data/site';
+interface Props {
+  items: Review[];
+}
+const { items } = Astro.props;
+---
+
+<div class="review-grid">
+  {
+    items.map((review) => (
+      <article class="review">
+        <p class="stars"><span class="sr">Rated 5 out of 5 on Google.</span><span aria-hidden="true">★★★★★</span></p>
+        <blockquote>
+          <p>{review.text}</p>
+        </blockquote>
+        <footer>
+          <strong>{review.author}</strong>
+          {review.date && (
+            <>
+              {' '}
+              · <time datetime={review.date}>{formatDate(review.date)}</time>
+            </>
+          )}
+        </footer>
+      </article>
+    ))
+  }
+</div>
